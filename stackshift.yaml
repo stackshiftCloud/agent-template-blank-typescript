@@ -1,0 +1,30 @@
+apiVersion: stackshift.com/v1
+kind: Application
+metadata:
+  name: blank-agent
+spec:
+  services:
+    agent:
+      type: agent
+      startCommand: node dist/agent.js
+      port: 8080
+      agent:
+        name: Blank agent
+        level: ask_every_time
+        wakeOn: [inbox]
+        sleepAfter: 15m
+        payWith: credits
+        budget:
+          computePerDay: { NGN: "500000" }
+        inbox:
+          sendMode: replies
+        actions:
+          - key: count_words
+            summary: Count the words in a piece of text
+            risk: read
+            input:
+              type: object
+              required: [text]
+              properties:
+                text: { type: string, maxLength: 100000 }
+            output: trusted
